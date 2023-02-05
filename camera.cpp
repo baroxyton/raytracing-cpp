@@ -1,6 +1,8 @@
 #include "camera.h"
 #include <math.h>
 #include <vector>
+#include "vectorOps.h"
+#include "ray.h"
 void Camera::setAngle(double angle)
 {
     viewAngle = angle;
@@ -21,6 +23,49 @@ void Camera::setAngle(double angle)
         We can use half of the angle and then apply sohcahtoa. Our field here would be 2 tan(totalAngle/2). This project only works with <180 degrees
     */
     matrixWidth = 2 * tan(viewAngle / 2 * M_PI / 180);
+}
+std::vector<std::vector<Color>> Camera::getRender()
+{
+    // Find the basis vector that points to the centre of our matrix. It is found using vector subtraction followed by normalization
+
+    std::vector<double> toMatrixCentre = vectorOps::getUnitVector(vectorOps::vectorSubtraction(coordinates, target));
+
+    // Next we need to find the vector that is perpendicular to our toMatrixCentre vector, and paralel to the xz-plane
+    // https://gamedev.stackexchange.com/questions/70075/how-can-i-find-the-perpendicular-to-a-2d-vector
+    /*
+                x=5,z=0
+            -------------
+            |
+            |
+            |
+            | x=0, z=5
+    */
+    std::vector<double> matrixBasisVector{-toMatrixCentre[2], 0, toMatrixCentre[0]};
+    std::vector<double> matrixCentreCoords = vectorOps::vectorAddition(coordinates, toMatrixCentre);
+
+    // Subtract half the matrix width
+    std::vector<double> matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, vectorOps::scalarMultiplication(matrixBasisVector, matrixWidth / 2));
+    // Subtract half the matrix height
+    matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, std::vector<double>{0, matrixWidth / 2, 0});
+    double pixelSize = matrixWidth / resolution;
+
+    std::vector<std::vector<Color>> output;
+    for (int i = 0; i < resolution; i++)
+    {
+        std::vector<Color> row;
+        for (int j = 0; j < resolution; j++)
+        {
+            std::vector<double> xzpixelOffset = vectorOps::scalarMultiplication(matrixBasisVector, pixelSize * i);
+            std::vector<double> pixelOffset{xzpixelOffset[0] + pixelSize / 2, pixelSize * j + pixelSize / 2, xzpixelOffset[2] + pixelSize / 2};
+            std::vector<double> pixelPos = vectorOps::vectorAddition(matrixStart, pixelOffset);
+
+            std::vector<double> rayUnitVector = vectorOps::getUnitVector(vectorOps::vectorSubtraction(coordinates, pixelPos));
+            Ray pixelRay{100, coordinates, rayUnitVector, 1};
+            row.push_back(pixelRay.output);
+        }
+        output.push_back(row);
+    }
+    return output;
 }
 Camera::Camera(std::vector<double> coordinates)
 {

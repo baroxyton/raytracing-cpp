@@ -5,7 +5,9 @@ double vectorOps::dotProduct(std::vector<double> vector1, std::vector<double> ve
     double result;
     for (int i = 0; i < vector1.size(); i++)
     {
+        result += vector1[i] * vector2[i];
     }
+    return result;
 }
 std::vector<double> vectorOps::crossProduct(std::vector<double> vector1, std::vector<double> vector2)
 {
@@ -20,4 +22,23 @@ std::vector<double> vectorOps::getUnitVector(std::vector<double> inputVector)
     double magnitude = sqrt(pow(inputVector[0], 2) + pow(inputVector[1], 2) + pow(inputVector[2], 2));
 
     return std::vector<double>{inputVector[0] / magnitude, inputVector[1] / magnitude, inputVector[2] / magnitude};
+}
+std::vector<double> vectorOps::vectorSubtraction(std::vector<double> vector1, std::vector<double> vector2){
+    std::vector<double> result;
+    for (int i = 0; i < vector1.size(); i++)
+    {
+        result.push_back(vector1[i] - vector2[i]);
+    }
+    return result;
+}
+std::vector<double> vectorOps::vectorAddition(std::vector<double> vector1, std::vector<double> vector2){
+    std::vector<double> result;
+    for (int i = 0; i < vector1.size(); i++)
+    {
+        result.push_back(vector1[i] + vector2[i]);
+    }
+    return result;
+}
+std::vector<double> vectorOps::scalarMultiplication(std::vector<double> input, double scalar){
+    return std::vector<double> {input[0] * scalar, input[1] * scalar, input[2] * scalar};
 }
