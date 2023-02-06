@@ -13,8 +13,8 @@ private:
     std::vector<double> coordinates;
     std::vector<double> target;
     double viewRange = 100;
-    double viewAngle = 90;
+    double viewAngle = 30;
     double raySpeed = 1;
-    double resolution = 100;
+    double resolution = 30;
     double matrixWidth;
 };

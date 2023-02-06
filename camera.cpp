@@ -50,10 +50,10 @@ std::vector<std::vector<Color>> Camera::getRender()
     double pixelSize = matrixWidth / resolution;
 
     std::vector<std::vector<Color>> output;
-    for (int i = 0; i < resolution; i++)
+    for (int j = 0; j < resolution; j++)
     {
         std::vector<Color> row;
-        for (int j = 0; j < resolution; j++)
+        for (int i = 0; i < resolution; i++)
         {
             std::vector<double> xzpixelOffset = vectorOps::scalarMultiplication(matrixBasisVector, pixelSize * i);
             std::vector<double> pixelOffset{xzpixelOffset[0] + pixelSize / 2, pixelSize * j + pixelSize / 2, xzpixelOffset[2] + pixelSize / 2};
@@ -69,6 +69,7 @@ std::vector<std::vector<Color>> Camera::getRender()
 }
 Camera::Camera(std::vector<double> coordinates)
 {
+    setAngle(90);
     this->coordinates = coordinates;
-    target = std::vector<double>{0, 0, 0};
+    target = std::vector<double>{10, 0, 10};
 }
