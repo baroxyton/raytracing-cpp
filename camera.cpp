@@ -61,7 +61,7 @@ std::vector<std::vector<Color>> Camera::getRender()
             std::vector<double> pixelPos = vectorOps::vectorAddition(matrixStart, pixelOffset);
 
             std::vector<double> rayUnitVector = vectorOps::getUnitVector(vectorOps::vectorSubtraction(coordinates, pixelPos));
-            Ray pixelRay{10, coordinates, rayUnitVector, &world, 0.5};
+            Ray pixelRay{20, coordinates, rayUnitVector, &world, 1};
             row.push_back(pixelRay.output);
         }
         output.push_back(row);
@@ -72,5 +72,5 @@ Camera::Camera(std::vector<double> coordinates)
 {
     setAngle(90);
     this->coordinates = coordinates;
-    target = std::vector<double>{1, 1, 0};
+    target = std::vector<double>{10, 2, 10};
 }

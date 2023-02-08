@@ -20,3 +20,11 @@ public:
     double height;
     double length;
 };
+class Sphere : public Shape
+{
+    public:
+    bool doesIntersect(std::vector<double> coords);
+    Sphere(std::vector<double> center, double radius): center(center), radius(radius){};
+    std::vector<double> center;
+    double radius;
+};
