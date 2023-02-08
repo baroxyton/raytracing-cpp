@@ -1,9 +1,11 @@
 #pragma once
 #include <vector>
 #include "render.h"
+#include "shape.h"
 class Camera
 {
 public:
+    std::vector<Shape*> world;
     void lookAt(double x, double y, double z);
     void lookAt(double deg1, double deg2);
     std::vector<std::vector<Color>> getRender();
@@ -15,6 +17,6 @@ private:
     double viewRange = 100;
     double viewAngle = 30;
     double raySpeed = 1;
-    double resolution = 30;
+    double resolution = 10;
     double matrixWidth;
 };
