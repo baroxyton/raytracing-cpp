@@ -14,9 +14,14 @@ public:
 private:
     std::vector<double> coordinates;
     std::vector<double> target;
+    std::vector<double> matrixBasisVector;
+    std::vector<double> matrixStart;
+    
     double viewRange = 100;
     double viewAngle = 30;
     double raySpeed = 1;
     double resolution = 100;
     double matrixWidth;
+    double pixelSize;
+    void calculateMatrix();
 };

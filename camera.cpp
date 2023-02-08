@@ -25,8 +25,7 @@ void Camera::setAngle(double angle)
     */
     matrixWidth = 2 * tan(viewAngle / 2 * M_PI / 180);
 }
-std::vector<std::vector<Color>> Camera::getRender()
-{
+void Camera::calculateMatrix(){
     // Find the basis vector that points to the centre of our matrix. It is found using vector subtraction followed by normalization
 
     std::vector<double> toMatrixCentre = vectorOps::getUnitVector(vectorOps::vectorSubtraction(coordinates, target));
@@ -41,15 +40,17 @@ std::vector<std::vector<Color>> Camera::getRender()
             |
             | x=0, z=5
     */
-    std::vector<double> matrixBasisVector{-toMatrixCentre[2], 0, toMatrixCentre[0]};
+    matrixBasisVector = {-toMatrixCentre[2], 0, toMatrixCentre[0]};
     std::vector<double> matrixCentreCoords = vectorOps::vectorAddition(coordinates, toMatrixCentre);
 
     // Subtract half the matrix width
-    std::vector<double> matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, vectorOps::scalarMultiplication(matrixBasisVector, matrixWidth / 2));
+    matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, vectorOps::scalarMultiplication(matrixBasisVector, matrixWidth / 2));
     // Subtract half the matrix height
     matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, std::vector<double>{0, matrixWidth / 2, 0});
-    double pixelSize = matrixWidth / resolution;
-
+    pixelSize = matrixWidth / resolution;
+}
+std::vector<std::vector<Color>> Camera::getRender()
+{
     std::vector<std::vector<Color>> output;
     for (int j = 0; j < resolution; j++)
     {
@@ -72,5 +73,7 @@ Camera::Camera(std::vector<double> coordinates)
 {
     setAngle(90);
     this->coordinates = coordinates;
-    target = std::vector<double>{10, 2, 10};
+    target = std::vector<double>{10, 2, 0};
+    calculateMatrix();
+
 }
