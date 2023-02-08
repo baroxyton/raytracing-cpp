@@ -13,7 +13,7 @@ Ray::Ray(double reach, std::vector<double> coords, std::vector<double> moveVecto
     getOutput();
 }
 Color Ray::getOutput(){
-    for(int dist = 0; dist < reach; dist += speed){
+    for(double dist = 0; dist < reach; dist += speed){
         coords = vectorOps::vectorAddition(coords, vectorOps::scalarMultiplication(moveVector, speed));
         //std::cout << moveVector[0] << " " << moveVector[1] << " " << moveVector[2] << std::endl;
         if(coords[1] < 0){
