@@ -46,7 +46,8 @@ void Camera::calculateMatrix(){
     // Subtract half the matrix width
     matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, vectorOps::scalarMultiplication(matrixBasisVector, matrixWidth / 2));
     // Subtract half the matrix height
-    matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, std::vector<double>{0, matrixWidth / 2, 0});
+    matrixStart = vectorOps::vectorSubtraction(matrixStart, std::vector<double>{0, matrixWidth / 2, 0});
+    
     pixelSize = matrixWidth / resolution;
     //std::cout << matrixBasisVector[0] << " " << matrixBasisVector[2] << std::endl;
 }
