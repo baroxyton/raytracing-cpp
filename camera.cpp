@@ -25,7 +25,8 @@ void Camera::setAngle(double angle)
     */
     matrixWidth = 2 * tan(viewAngle / 2 * M_PI / 180);
 }
-void Camera::calculateMatrix(){
+void Camera::calculateMatrix()
+{
     // Find the basis vector that points to the centre of our matrix. It is found using vector subtraction followed by normalization
 
     std::vector<double> toMatrixCentre = vectorOps::getUnitVector(vectorOps::vectorSubtraction(coordinates, target));
@@ -47,9 +48,9 @@ void Camera::calculateMatrix(){
     matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, vectorOps::scalarMultiplication(matrixBasisVector, matrixWidth / 2));
     // Subtract half the matrix height
     matrixStart = vectorOps::vectorSubtraction(matrixStart, std::vector<double>{0, matrixWidth / 2, 0});
-    
+
     pixelSize = matrixWidth / resolution;
-    //std::cout << matrixBasisVector[0] << " " << matrixBasisVector[2] << std::endl;
+    // std::cout << matrixBasisVector[0] << " " << matrixBasisVector[2] << std::endl;
 }
 std::vector<std::vector<Color>> Camera::getRender()
 {
@@ -64,18 +65,57 @@ std::vector<std::vector<Color>> Camera::getRender()
             std::vector<double> pixelPos = vectorOps::vectorAddition(matrixStart, pixelOffset);
 
             std::vector<double> rayUnitVector = vectorOps::getUnitVector(vectorOps::vectorSubtraction(coordinates, pixelPos));
-            Ray pixelRay{20, coordinates, rayUnitVector, &world, 1};
+            Ray pixelRay{20, coordinates, rayUnitVector, &world, raySpeed};
             row.push_back(pixelRay.output);
         }
         output.push_back(row);
     }
     return output;
 }
+void Camera::setRaySpeed(double raySpeed)
+{
+    this->raySpeed = raySpeed;
+}
+void Camera::setResolution(double resolution)
+{
+    this->resolution = resolution;
+    calculateMatrix();
+}
+void Camera::lookAt(std::vector<double> target)
+{
+    this->target = target;
+    calculateMatrix();
+}
+void Camera::lookAt(double deg1, double deg2)
+{
+    /*
+    Spherical (r,θ,ϕ) → Cartesian (x,y,z)
+    x=r sin ϕ cos θ
+    y=r sin ϕ sin θ
+    z=r cos ϕ
+
+    r=1
+    theta = deg1
+    phi = deg2
+    */
+
+    double theta = deg2 * M_PI / 180;
+    double phi = deg1 * M_PI / 180;
+    double x = sin(theta) * cos(phi);
+    double y = sin(theta) * sin(phi);
+    double z = cos(theta);
+    // For we use coordinates typical for video games, we switch the z and y coordinates
+    lookAt(std::vector<double>{x, z, y});
+}
+void Camera::moveTo(std::vector<double> coordinates)
+{
+    this->coordinates = coordinates;
+    calculateMatrix();
+}
 Camera::Camera(std::vector<double> coordinates)
 {
     setAngle(90);
-    this->coordinates = coordinates;
-    target = std::vector<double>{10, 2, 0};
+    moveTo(coordinates);
+    lookAt(0, 90);
     calculateMatrix();
-
 }
