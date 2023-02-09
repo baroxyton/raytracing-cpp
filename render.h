@@ -13,4 +13,5 @@ enum Color : unsigned int{
     lightgray
 
 };
-void renderFrame(std::vector<std::vector<Color>>);
+void renderFrame(std::vector<std::vector<Color>> frame);
+void renderFrame3D(std::vector<std::vector<Color>> eye1, std::vector<std::vector<Color>> eye2);

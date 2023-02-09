@@ -5,9 +5,11 @@
 int main(){
     Rectangle* testShape = new Rectangle{std::vector<double>{10,5,0}, 5, 5, 5};
     Sphere* testSphere = new Sphere{std::vector<double>{10, 2, 0}, 2};
-    Camera testCamera{std::vector<double>{0,2,0}};
+    Camera testCamera{std::vector<double>{0,0,-2}};
+    Camera testCamera2{std::vector<double>{0,0,2}};
     testCamera.world.push_back(testShape);
     testCamera.world.push_back(testSphere);
+    testCamera2.world = testCamera.world;
     double speedLeft = 0.05;
     int i = 0;
     
@@ -21,7 +23,7 @@ int main(){
             i=0;
             speedLeft *= -1;
         }
-        renderFrame(testCamera.getRender());
+        renderFrame3D(testCamera.getRender(), testCamera2.getRender());
     }
     
 }
