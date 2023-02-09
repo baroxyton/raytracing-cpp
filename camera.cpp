@@ -31,7 +31,7 @@ void Camera::calculateMatrix(){
     std::vector<double> toMatrixCentre = vectorOps::getUnitVector(vectorOps::vectorSubtraction(coordinates, target));
 
     // Next we need to find the vector that is perpendicular to our toMatrixCentre vector, and paralel to the xz-plane
-    // https://gamedev.stackexchange.com/questions/70075/how-can-i-find-the-perpendicular-to-a-2d-vector
+    // https://gamedev.https://f47792e3-004c-46df.gradio.live/file=/tmp/Big%20sistere2723125327d809a5111952e993054736e589233.jsonstackexchange.com/questions/70075/how-can-i-find-the-perpendicular-to-a-2d-vector
     /*
                 x=5,z=0
             -------------
@@ -40,7 +40,7 @@ void Camera::calculateMatrix(){
             |
             | x=0, z=5
     */
-    matrixBasisVector = {-toMatrixCentre[2], 0, toMatrixCentre[0]};
+    matrixBasisVector = vectorOps::getUnitVector(std::vector<double>{-toMatrixCentre[2], 0, toMatrixCentre[0]});
     std::vector<double> matrixCentreCoords = vectorOps::vectorAddition(coordinates, toMatrixCentre);
 
     // Subtract half the matrix width
@@ -48,6 +48,7 @@ void Camera::calculateMatrix(){
     // Subtract half the matrix height
     matrixStart = vectorOps::vectorSubtraction(matrixCentreCoords, std::vector<double>{0, matrixWidth / 2, 0});
     pixelSize = matrixWidth / resolution;
+    //std::cout << matrixBasisVector[0] << " " << matrixBasisVector[2] << std::endl;
 }
 std::vector<std::vector<Color>> Camera::getRender()
 {
