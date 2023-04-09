@@ -105,7 +105,7 @@ void Camera::lookAt(double deg1, double deg2)
     double y = sin(theta) * sin(phi);
     double z = cos(theta);
     // For we use coordinates typical for video games, we switch the z and y coordinates
-    lookAt(std::vector<double>{x, z, y});
+    lookAt(std::vector<double>{coordinates[0] + x, coordinates[1] + z, coordinates[2] + y});
 }
 void Camera::moveTo(std::vector<double> coordinates)
 {

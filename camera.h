@@ -23,7 +23,7 @@ private:
     double viewRange = 100;
     double viewAngle = 30;
     double raySpeed = 1;
-    double resolution = 70;
+    double resolution = 150;
     double matrixWidth;
     double pixelSize;
     void calculateMatrix();
